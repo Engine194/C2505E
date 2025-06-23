@@ -51,15 +51,13 @@ int main()
 void printMaxGpa(struct Student *group, int length)
 {
     int maxIndex = 0;
-    struct Student *ptr = group;
     for (int i = 0; i < length; i++)
     {
-        if ((*(ptr + i)).gpa >= (*(ptr + maxIndex)).gpa)
+        if ((*(group + i)).gpa >= (*(group + maxIndex)).gpa)
             maxIndex = i;
     }
-    struct Student *maxGpa = group;
-    maxGpa += maxIndex;
-    printf("Max GPA from Student %s with GPA = %.2f\n", (*maxGpa).name, (*maxGpa).gpa);
+    struct Student maxGpa = *(group + maxIndex);
+    printf("Max GPA from Student %s with GPA = %.2f\n", maxGpa.name, maxGpa.gpa);
 }
 
 void sortStudents(struct Student *group, int length)
