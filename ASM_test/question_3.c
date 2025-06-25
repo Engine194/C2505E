@@ -33,18 +33,14 @@ int main()
      * b) (2 points – for high-performing students) Find and print the book with the most recent publish date.
      */
     int n;
-    do
-    {
-        printf("Enter numbers of books to import (n) = ");
-        scanf("%d", &n);
-    } while (n <= 0);
+    printf("Enter numbers of books to import (n) = ");
+    scanf("%d", &n);
     preventSkipLine();
     int count = 0;
     struct Book books[n];
     insertBooks(books, &count, n);
-    printf("List of books:\n");
+    printf("\nList of books:\n");
     printBooks(books, n);
-    sortBooksByPublishDate(books, n);
     findLatestPublishDate(books, n);
     return 0;
 }
@@ -108,20 +104,27 @@ void sortBooksByPublishDate(struct Book *books, int total)
 
 void findLatestPublishDate(struct Book *books, int total)
 {
+    struct Book cloneBooks[total];
+    struct Book *clonePtr = cloneBooks;
+    for (int i = 0; i < total; i++)
+    {
+        *(clonePtr + i) = *(books + i);
+    }
+    sortBooksByPublishDate(cloneBooks, total);
     struct Book latestBooks[total];
     struct Book *ptr = latestBooks;
-    struct Date latestPublishDate = (*books).publishDate;
+    struct Date latestPublishDate = (*clonePtr).publishDate;
     int count = 0;
     // Find other books might be published on the same date
     for (int i = 0; i < total; i++)
     {
-        if (isTheSameDate((*(books + i)).publishDate, latestPublishDate))
+        if (isTheSameDate((*(clonePtr + i)).publishDate, latestPublishDate))
         {
-            *(ptr + count) = *(books + i);
+            *(ptr + count) = *(clonePtr + i);
             count++;
         }
     }
-    printf("Book(s) with the most recent publish date:\n");
+    printf("\nBook(s) with the most recent publish date:\n");
     printBooks(latestBooks, count);
 };
 
